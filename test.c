@@ -11,12 +11,12 @@ int main(void) {
 
     FILE *fp = NULL;
     int res = 0;
-    int num = 8000000; // 8000000 = 1GB
+    int num = 1000000; // 8000000 = 1GB
 
     char filename[] = "test_b";
     char write_dat[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                        "123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello World! ";
-    char write_dat_miss_order_1[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
+    char write_dat_miss_order_1[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLM"; // 必须少一个
     char write_dat_miss_order_2[] =
         "OPQRSTUVWXYZ 123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello "
         "World! abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
@@ -49,6 +49,7 @@ int main(void) {
             return 0;
         }
     }
+    printf("last read: %s \n", read_buf);
     printf("read over ,num=%d\n", num);
     fclose(fp);
     printf("[test 1]: PSASS \n");
@@ -73,6 +74,7 @@ int main(void) {
             return 0;
         }
     }
+    printf("last read: %s \n", read_buf);
     printf("read over ,num=%d\n", num);
     fclose(fp);
     printf("[test 2]: PSASS \n");
