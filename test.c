@@ -17,7 +17,7 @@ int main(void) {
     char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
     char write_dat_miss_order_1[14] = "abcdefghijklmn";
     char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
-    char write_dat_miss_order_cmp[] = "opqrstuvwxyz 123456789 abcdefghijklmn";
+    char write_dat_miss_order_cmp[] = "opqrstuvwxyz 123456789 abcdefghijklmn";//此时必须加上字符串数组结尾的\0
     char read_buf[256] = {0};
 
     fp = fopen(filename, "wb");
