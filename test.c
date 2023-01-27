@@ -57,7 +57,7 @@ int main(void) {
     } else
         printf("read over ,num=%d\n", num);
     close(fd);
-    printf("\n [test 1]: PSASS \n", num);
+    printf("\n [test 1]: PSASS \n");
 
     // test 2
     printf("\n [test 2]: ... ... ... \n");
@@ -85,7 +85,7 @@ int main(void) {
     } else
         printf("read over ,num=%d\n", num);
     close(fd);
-    printf("\n [test 2]: PSASS \n", num);
+    printf("\n [test 2]: PSASS \n");
 
     return 0;
 }
