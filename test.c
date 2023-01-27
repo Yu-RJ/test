@@ -15,11 +15,11 @@ int main(void) {
 
     char filename[] = "test_b";
     char write_dat[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                       "123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello World!\n";
+                       "123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello World! ";
     char write_dat_miss_order_1[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
     char write_dat_miss_order_2[] =
         "OPQRSTUVWXYZ 123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello "
-        "World!\nabcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
+        "World! abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
     char read_buf[256] = {0};
 
     fp = fopen(filename, "wb");
