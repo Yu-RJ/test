@@ -12,7 +12,7 @@ int main(void) {
     int res = 0;
     int num = 8000000; // 8000000 = 1GB
 
-    char filename[] = "test.txt";
+    char filename[] = "test_b";
     char write_dat[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                        "123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello World!\n";
     char write_dat_miss_order_1[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
@@ -21,7 +21,7 @@ int main(void) {
         "World!\nabcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
     char read_buf[256] = {0};
 
-    fd = open(filename, O_RDWR | O_CREAT, 0664);
+    fd = open(filename, "wb");
     if (fd < 0) {
         printf("%s file open fail", filename);
         return -1;
@@ -36,7 +36,7 @@ int main(void) {
     close(fd);
 
     printf("\n [test 1]: ... ... ... \n");
-    fd = open(filename, O_RDONLY);
+    fd = open(filename, "rb");
     if (fd < 0) {
         printf("%s file open fail", filename);
         return -1;
@@ -57,11 +57,11 @@ int main(void) {
     } else
         printf("read over ,num=%d\n", num);
     close(fd);
-    printf("\n [test 1]: PSASS \n");
+    printf("[test 1]: PSASS \n");
 
     // test 2
     printf("\n [test 2]: ... ... ... \n");
-    fd = open(filename, O_RDONLY);
+    fd = open(filename, "rb");
     if (fd < 0) {
         printf("%s file open fail", filename);
         return -1;
@@ -85,7 +85,7 @@ int main(void) {
     } else
         printf("read over ,num=%d\n", num);
     close(fd);
-    printf("\n [test 2]: PSASS \n");
+    printf("[test 2]: PSASS \n");
 
     return 0;
 }
