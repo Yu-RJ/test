@@ -17,6 +17,7 @@ int main(void) {
     char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
     char write_dat_miss_order_1[14] = "abcdefghijklmn";
     char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
+    char write_dat_miss_order_cmp[] = "opqrstuvwxyz 123456789 abcdefghijklmn"
     char read_buf[256] = {0};
 
     fp = fopen(filename, "wb");
@@ -65,7 +66,7 @@ int main(void) {
         for (int j = 0; j < 256; j++)
             read_buf[j] = '\0';
         fread(read_buf, sizeof(write_dat_miss_order_2), 1, fp);
-        if (strcmp(read_buf, write_dat_miss_order_2) != 0) {
+        if (strcmp(read_buf, write_dat_miss_order_cmp) != 0) {
             printf("CMP ERROR: i= %d , read: %s \n", i, read_buf);
             fclose(fp);
             return 0;
