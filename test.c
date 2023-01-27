@@ -11,15 +11,12 @@ int main(void) {
 
     FILE *fp = NULL;
     int res = 0;
-    int num = 1000000; // 8000000 = 1GB
+    int num = 1000000;
 
     char filename[] = "test_b";
-    char write_dat[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                       "123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello World! ";
-    char write_dat_miss_order_1[] = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLM"; // 必须少一个
-    char write_dat_miss_order_2[] =
-        "OPQRSTUVWXYZ 123456789 ~!@#$^&*()_+-=[]./',.?><:` Hello "
-        "World! abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMN";
+    char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
+    char write_dat_miss_order_1[14] = "abcdefghijklmn";
+    char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
     char read_buf[256] = {0};
 
     fp = fopen(filename, "wb");
@@ -63,11 +60,11 @@ int main(void) {
     }
     for (int j = 0; j < 256; j++)
         read_buf[j] = '\0';
-    fread(read_buf, sizeof(write_dat_miss_order_1), 1, fp);        
+    fread(read_buf, sizeof(write_dat_miss_order_1), 1, fp);
     for (int i = 0; i < num - 1; i++) {
         for (int j = 0; j < 256; j++)
             read_buf[j] = '\0';
-        fread(read_buf, sizeof(write_dat_miss_order_2), 1, fp); 
+        fread(read_buf, sizeof(write_dat_miss_order_2), 1, fp);
         if (strcmp(read_buf, write_dat_miss_order_2) != 0) {
             printf("CMP ERROR: i= %d , read: %s \n", i, read_buf);
             fclose(fp);
