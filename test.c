@@ -35,7 +35,7 @@ int main(void) {
         printf("write over ,num=%d\n", num);
     close(fd);
 
-    printf("\n [test 1]: ... ... ... \n", num);
+    printf("\n [test 1]: ... ... ... \n");
     fd = open(filename, O_RDONLY);
     if (fd < 0) {
         printf("%s file open fail", filename);
@@ -60,7 +60,7 @@ int main(void) {
     printf("\n [test 1]: PSASS \n", num);
 
     // test 2
-    printf("\n [test 2]: ... ... ... \n", num);
+    printf("\n [test 2]: ... ... ... \n");
     fd = open(filename, O_RDONLY);
     if (fd < 0) {
         printf("%s file open fail", filename);
