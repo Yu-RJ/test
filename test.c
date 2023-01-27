@@ -69,7 +69,7 @@ int main(void) {
         fread(read_buf, sizeof(write_dat_miss_order_2), 1, fp); 
         if (strcmp(read_buf, write_dat_miss_order_2) != 0) {
             printf("CMP ERROR: i= %d , read: %s \n", i, read_buf);
-            fclose(fd);
+            fclose(fp);
             return 0;
         }
     }
