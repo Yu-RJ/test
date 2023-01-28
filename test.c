@@ -17,7 +17,8 @@ int main(void) {
     char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
     char write_dat_miss_order_1[14] = "abcdefghijklmn";
     char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
-    char write_dat_miss_order_cmp[] = "opqrstuvwxyz 123456789 abcdefghijklmn";//此时必须加上字符串数组结尾的\0
+    char write_dat_miss_order_cmp[] =
+        "opqrstuvwxyz 123456789 abcdefghijklmn"; // 此时必须加上字符串数组结尾的\0
     char read_buf[256] = {0};
 
     fp = fopen(filename, "wb");
@@ -77,5 +78,29 @@ int main(void) {
     fclose(fp);
     printf("[test 2]: PSASS \n");
 
+    printf("write short int ....    ");
+    fp = fopen(filename, "wb");
+    unsigned short write_b[65536];
+    for (unsigned short i = 0; i < 65536; i++)
+        write_b[i] = i;
+    for (int i = 0; i < num; i++)
+        fwrite(write_b, sizeof(write_b), 1, fp);
+    fclose(fp);
+    printf("[write over]\n");
+
+    printf("\n [test 3]: ... ... ... \n");
+    fp = fopen(filename, "rb");
+    unsigned short short_com;
+    for (int i = 0; i < num - 1; i++)
+        for (unsigned short j = 0; j < 65536; j++) {
+            fread(&short_com, sizeof(unsigned short), 1, fp);
+            if (short_com != j) {
+                printf("CMP ERROR: i=%d , j=%d , read:BEGIN-%s-END\n", i, j,
+                       read_buf);
+            }
+        }
+    fclose(fp);    
+    printf("[test 3]: PSASS \n");    
+    // printf("");
     return 0;
 }
