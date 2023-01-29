@@ -17,9 +17,10 @@ int main(void) {
     // char filename[] = "test_b";
     // char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
     // char write_dat_miss_order_1[14] = "abcdefghijklmn";
-    // char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
-    // char write_dat_miss_order_cmp[] =
-    //     "opqrstuvwxyz 123456789 abcdefghijklmn"; // 此时必须加上字符串数组结尾的\0
+    // char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789
+    // abcdefghijklmn"; char write_dat_miss_order_cmp[] =
+    //     "opqrstuvwxyz 123456789 abcdefghijklmn"; //
+    //     此时必须加上字符串数组结尾的\0
     // char read_buf[256] = {0};
     // --------------------------------------------------------------------------------
     // printf("start write :");
@@ -82,11 +83,10 @@ int main(void) {
     // fclose(fp);
     // printf("[test 2]: PSASS \n");
 
-
     // --------------------------------------------------------------------------------
     FILE *fp = NULL;
     char filename[] = "test_data";
-    printf("begin bit test ... ... ...\n");
+    printf("begin test ... ... ...\n");
     fp = fopen(filename, "wb");
     if (!fp) {
         printf("%s file open fail\n", filename);
