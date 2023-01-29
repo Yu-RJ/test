@@ -20,7 +20,7 @@ int main(void) {
     char write_dat_miss_order_cmp[] =
         "opqrstuvwxyz 123456789 abcdefghijklmn"; // 此时必须加上字符串数组结尾的\0
     char read_buf[256] = {0};
-
+    // --------------------------------------------------------------------------------
     fp = fopen(filename, "wb");
     if (!fp) {
         printf("%s file open fail\n", filename);
@@ -30,7 +30,7 @@ int main(void) {
         fwrite(write_dat, sizeof(write_dat), 1, fp);
     printf("write over ,num=%d\n", num);
     fclose(fp);
-
+    // --------------------------------------------------------------------------------
     // test 1
     printf("\n [test 1]: ... ... ... \n");
     fp = fopen(filename, "rb");
@@ -52,7 +52,7 @@ int main(void) {
     printf("read over ,num=%d\n", num);
     fclose(fp);
     printf("[test 1]: PSASS \n");
-
+    // --------------------------------------------------------------------------------
     // test 2
     printf("\n [test 2]: ... ... ... \n");
     fp = fopen(filename, "rb");
@@ -77,7 +77,7 @@ int main(void) {
     printf("read over ,num=%d\n", num);
     fclose(fp);
     printf("[test 2]: PSASS \n");
-
+    // --------------------------------------------------------------------------------
     printf("begin bit test ... ... ...\n");
     printf("write short int ... ... ...");
     fp = fopen(filename, "wb");
@@ -88,11 +88,11 @@ int main(void) {
     unsigned short write_b[65536];
     for (unsigned short i = 0; i < 65536; i++)
         write_b[i] = i;
-    for (int i = 0; i < num/1000; i++)
+    for (int i = 0; i < num / 1000; i++)
         fwrite(write_b, sizeof(write_b), 1, fp);
     fclose(fp);
     printf("[write over]\n");
-
+    // --------------------------------------------------------------------------------
     printf("\n [test 3]: ... ... ... \n");
     fp = fopen(filename, "rb");
     if (!fp) {
@@ -100,7 +100,7 @@ int main(void) {
         return -1;
     }
     unsigned short short_com;
-    for (int i = 0; i < num/1000 - 1; i++)
+    for (int i = 0; i < num / 1000 - 1; i++)
         for (unsigned short j = 0; j < 65536; j++) {
             fread(&short_com, sizeof(unsigned short), 1, fp);
             if (short_com != j) {
@@ -108,8 +108,7 @@ int main(void) {
                        read_buf);
             }
         }
-    fclose(fp);    
-    printf("[test 3]: PSASS \n");    
-    // printf("");
+    fclose(fp);
+    printf("[test 3]: PSASS \n");
     return 0;
 }
