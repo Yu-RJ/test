@@ -78,8 +78,13 @@ int main(void) {
     fclose(fp);
     printf("[test 2]: PSASS \n");
 
-    printf("write short int ....    ");
+    printf("begin bit test ... ... ...\n");
+    printf("write short int ... ... ...");
     fp = fopen(filename, "wb");
+    if (!fp) {
+        printf("%s file open fail\n", filename);
+        return -1;
+    }
     unsigned short write_b[65536];
     for (unsigned short i = 0; i < 65536; i++)
         write_b[i] = i;
