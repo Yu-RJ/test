@@ -1,7 +1,7 @@
 echo "** creat ssd space :"
 sudo rm -rf ~/ssd
 mkdir ~/ssd
-sudo mkfs -t ext4 /dev/nvme0n1 > ~/log/testlog
+sudo mkfs -t ext4 /dev/nvme0n1
 sudo mount /dev/nvme0n1 ~/ssd
 echo " PASS \n"
 echo "** git pull :"

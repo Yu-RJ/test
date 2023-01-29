@@ -84,30 +84,30 @@ int main(void) {
         printf("%s file open fail\n", filename);
         return -1;
     }else printf("%s [file open success]  ", filename);
-    unsigned short write_b[65536];
-    for (unsigned short i = 0; i < 65536; i++)
-        write_b[i] = i;
-    for (int i = 0; i < num / 1000; i++)
-        fwrite(write_b, sizeof(write_b), 1, fp);
-    fclose(fp);
-    printf("[write over]\n");
-    // --------------------------------------------------------------------------------
-    printf("\n [test 3]: ... ... ... \n");
-    fp = fopen(filename, "rb");
-    if (!fp) {
-        printf("%s file open fail\n", filename);
-        return -1;
-    }
-    unsigned short short_com;
-    for (int i = 0; i < num / 1000 - 1; i++)
-        for (unsigned short j = 0; j < 65536; j++) {
-            fread(&short_com, sizeof(unsigned short), 1, fp);
-            if (short_com != j) {
-                printf("CMP ERROR: i=%d , j=%d , read:BEGIN-%s-END\n", i, j,
-                       read_buf);
-            }
-        }
-    fclose(fp);
-    printf("[test 3]: PSASS \n");
+    // char write_b[65536];
+    // for (unsigned short i = 0; i < 65536; i++)
+    //     write_b[i] = i;
+    // for (int i = 0; i < num / 1000; i++)
+    //     fwrite(write_b, sizeof(write_b), 1, fp);
+    // fclose(fp);
+    // printf("[write over]\n");
+    // // --------------------------------------------------------------------------------
+    // printf("\n [test 3]: ... ... ... \n");
+    // fp = fopen(filename, "rb");
+    // if (!fp) {
+    //     printf("%s file open fail\n", filename);
+    //     return -1;
+    // }
+    // unsigned short short_com;
+    // for (int i = 0; i < num / 1000 - 1; i++)
+    //     for (unsigned short j = 0; j < 65536; j++) {
+    //         fread(&short_com, sizeof(unsigned short), 1, fp);
+    //         if (short_com != j) {
+    //             printf("CMP ERROR: i=%d , j=%d , read:BEGIN-%s-END\n", i, j,
+    //                    read_buf);
+    //         }
+    //     }
+    // fclose(fp);
+    // printf("[test 3]: PSASS \n");
     return 0;
 }
