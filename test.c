@@ -23,7 +23,7 @@ int main(void) {
 
     fp = fopen(filename, "wb");
     if (!fp) {
-        printf("%s file open fail", filename);
+        printf("%s file open fail\n", filename);
         return -1;
     }
     for (int i = 0; i < num; i++)
@@ -35,7 +35,7 @@ int main(void) {
     printf("\n [test 1]: ... ... ... \n");
     fp = fopen(filename, "rb");
     if (!fp) {
-        printf("%s file open fail", filename);
+        printf("%s file open fail\b", filename);
         return -1;
     }
     for (int i = 0; i < num; i++) {
@@ -90,6 +90,10 @@ int main(void) {
 
     printf("\n [test 3]: ... ... ... \n");
     fp = fopen(filename, "rb");
+    if (!fp) {
+        printf("%s file open fail\n", filename);
+        return -1;
+    }
     unsigned short short_com;
     for (int i = 0; i < num - 1; i++)
         for (unsigned short j = 0; j < 65536; j++) {
