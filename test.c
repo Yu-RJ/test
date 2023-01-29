@@ -10,17 +10,17 @@ int mycmp(void *arr1, void *arr2, int len);
 
 int main(void) {
 
-    FILE *fp = NULL;
-    int res = 0;
-    int num = 1000000;
+    // FILE *fp = NULL;
+    // int res = 0;
+    // int num = 1000000;
 
-    char filename[] = "test_b";
-    char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
-    char write_dat_miss_order_1[14] = "abcdefghijklmn";
-    char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
-    char write_dat_miss_order_cmp[] =
-        "opqrstuvwxyz 123456789 abcdefghijklmn"; // 此时必须加上字符串数组结尾的\0
-    char read_buf[256] = {0};
+    // char filename[] = "test_b";
+    // char write_dat[37] = "abcdefghijklmnopqrstuvwxyz 123456789 ";
+    // char write_dat_miss_order_1[14] = "abcdefghijklmn";
+    // char write_dat_miss_order_2[37] = "opqrstuvwxyz 123456789 abcdefghijklmn";
+    // char write_dat_miss_order_cmp[] =
+    //     "opqrstuvwxyz 123456789 abcdefghijklmn"; // 此时必须加上字符串数组结尾的\0
+    // char read_buf[256] = {0};
     // --------------------------------------------------------------------------------
     // printf("start write :");
     // fp = fopen(filename, "wb");
@@ -82,7 +82,10 @@ int main(void) {
     // fclose(fp);
     // printf("[test 2]: PSASS \n");
 
+
     // --------------------------------------------------------------------------------
+    FILE *fp = NULL;
+    char filename[] = "test_data";
     printf("begin bit test ... ... ...\n");
     fp = fopen(filename, "wb");
     if (!fp) {
@@ -93,7 +96,7 @@ int main(void) {
     char write_b[128];
     for (int i = 0; i < 128; i++)
         write_b[i] = i;
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < 5000000; i++)
         fwrite(write_b, 128, 1, fp);
     fclose(fp);
     printf("[write over]\n");
@@ -108,7 +111,7 @@ int main(void) {
     } else
         printf("%s [file open success]  ", filename);
     char com_c;
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < 5000000; i++)
         for (int j = 0; j < 128; j++) {
             fread(&com_c, 1, 1, fp);
             if (com_c != j % 128) {
