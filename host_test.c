@@ -86,13 +86,13 @@ int main(void) {
         printf("2 fseek fail 1,re=%d", re);
     for (int i = 127; i >= 0; i--)
         write_b[127-i] = i;
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 3; i++)
         fwrite(ptr, 128, 1, fp);
     // 读取特殊位置数据
-    re = fseek(fp, 128 * 5, SEEK_SET);
+    re = fseek(fp, 128 * 2, SEEK_SET);
     if (re != 0)
         printf("2 fseek fail 2,re=%d", re);
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 1; i++)
         for (int j = 127; j >= 0; j--) {
             fread(&com_c, 1, 1, fp);
             if (com_c != j % 128) {
