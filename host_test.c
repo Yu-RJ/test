@@ -50,7 +50,7 @@ int main(void) {
                        com_c);
             }
         }
-    printf("    [1.1 pass]\n");
+    printf("    [1.1 pass]");
     // test 1.2 ---------------------- // 测试 fseek 定位
     re = fseek(fp, 128 * 8, SEEK_SET);
     if (re != 0)
@@ -100,6 +100,8 @@ int main(void) {
                        com_c);
             }
         }
+    // 打印数据        
+    re = fseek(fp, 0, SEEK_SET);    
     for (int i = 0; i < 8 * 128; i++) {
         fread(&com_c, 1, 1, fp);
         printf("%c", com_c);
