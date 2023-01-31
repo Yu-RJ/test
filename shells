@@ -1,3 +1,7 @@
+HOST:
+./femu-compile.sh > /home/yurunjie/femu/build-femu/compile_log
+
+GUEST:
 echo "** creat ssd space :"
 sudo rm -rf ~/ssd
 mkdir ~/ssd
