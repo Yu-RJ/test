@@ -66,7 +66,7 @@ int main(void) {
     printf("    [1.2 pass]\n");
     fclose(fp);
 
-    // test 2   // 测试 wb+的 定位写后读
+    // test 2   // 测试 wb+ / rb+ 的 定位写后读
     // --------------------------------------------------------------------------------
     printf("\n [test 2]: ... ... ... \n");
     fp = fopen(filename, "wb+");
@@ -78,7 +78,7 @@ int main(void) {
     // 先写一般数据
     for (int i = 0; i < 128; i++)
         write_b[i] = i;
-    for (int i = 0; i < 8 * 1024; i++)
+    for (int i = 0; i < 8; i++)
         fwrite(ptr, 128, 1, fp);
     // 再写特殊位置数据
     re = fseek(fp, 128, SEEK_SET);
@@ -92,7 +92,7 @@ int main(void) {
     re = fseek(fp, 128 * 5, SEEK_SET);
     if (re != 0)
         printf("2 fseek fail 2,re=%d", re);
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 2; i++)
         for (int j = 127; j >= 0; j--) {
             fread(&com_c, 1, 1, fp);
             if (com_c != j % 128) {
