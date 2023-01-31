@@ -69,7 +69,7 @@ int main(void) {
     // test 2   // 测试 wb+的 定位写后读
     // --------------------------------------------------------------------------------
     printf("\n [test 2]: ... ... ... \n");
-    fp = fopen(filename, "wb+");
+    fp = fopen(filename, "rb+");
     if (!fp) {
         printf("%s file open fail\n", filename);
         return -1;
@@ -96,7 +96,7 @@ int main(void) {
         for (int j = 127; j >= 0; j--) {
             fread(&com_c, 1, 1, fp);
             if (com_c != j % 128) {
-                printf("1.1 CMP ERROR: i=%d , j=%d , read:BEGIN-%d-END\n", i, j,
+                printf("2 CMP ERROR: i=%d , j=%d , read:BEGIN-%d-END\n", i, j,
                        com_c);
             }
         }

@@ -1,5 +1,7 @@
 HOST:
 ./femu-compile.sh > /home/yurunjie/femu/build-femu/compile_log
+./run-blackbox.sh  > /home/yurunjie/femu/build-femu/filelog
+gcc host_test.c -o host_test
 
 GUEST:
 echo "** creat ssd space :"
