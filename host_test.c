@@ -85,7 +85,7 @@ int main(void) {
     if (re != 0)
         printf("2 fseek fail 1,re=%d", re);
     for (int i = 127; i >= 0; i--)
-        write_b[127-i] = i;
+        write_b[127 - i] = i;
     for (int i = 0; i < 3; i++)
         fwrite(ptr, 128, 1, fp);
     // 读取特殊位置数据
@@ -100,6 +100,12 @@ int main(void) {
                        com_c);
             }
         }
+    for (int i = 0; i < 8 * 128; i++) {
+        fread(&com_c, 1, 1, fp);
+        printf("%c", com_c);
+        if (i % 128 == 0)
+            printf(" [|] \n");
+    }
     fclose(fp);
     printf("    [2 pass]\n");
     return 0;
