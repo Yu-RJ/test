@@ -69,7 +69,7 @@ int main(void) {
     // test 2   // 测试 wb+的 定位写后读
     // --------------------------------------------------------------------------------
     printf("\n [test 2]: ... ... ... \n");
-    fp = fopen(filename, "rb+");
+    fp = fopen(filename, "wb+");
     if (!fp) {
         printf("%s file open fail\n", filename);
         return -1;
@@ -85,7 +85,7 @@ int main(void) {
     if (re != 0)
         printf("2 fseek fail 1,re=%d", re);
     for (int i = 127; i >= 0; i--)
-        write_b[i] = i;
+        write_b[127-i] = i;
     for (int i = 0; i < 8; i++)
         fwrite(ptr, 128, 1, fp);
     // 读取特殊位置数据
