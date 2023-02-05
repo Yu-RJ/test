@@ -1,5 +1,5 @@
 #include <errno.h> //与全局变量errno相关的定义
-#include <fcntl.h> //定义了open、creat等函数，以及表示文件权限的宏定义
+#include <fcntl.h> //定义了open、creat等函数，及表示文件权限的宏定义
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
