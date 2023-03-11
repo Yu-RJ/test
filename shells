@@ -19,3 +19,6 @@ echo "** gcc  :"
 gcc test.c -o test
 echo " PASS \n"
 sudo cp ~/test/test ~/ssd/test
+
+sudo cp ~/test/shells ~/ssd/shells
+cat ~/ssd/shells

@@ -1,17 +1,16 @@
-#!/bin/bash
-# Huaicheng Li <huaicheng@cs.uchicago.edu>
-# Run FEMU as a black-box SSD (FTL managed by the device)
-
 # image directory
 IMGDIR=$HOME/images
 # Virtual machine disk image
 OSIMGF=$IMGDIR/u20s.qcow2
-BACKEND_PATH=/dev/nvme0n1
+BACKEND_PATH=/dev/nvme1n1p1
 
 AIO=1
 DRAM=0
+
 SIMPLE=0
+PAGE=1
 COMPRESSION=4
+
 
 if [[ ! -e "$OSIMGF" ]]; then
 	echo ""
@@ -26,12 +25,12 @@ sudo x86_64-softmmu/qemu-system-x86_64 \
     -name "FEMU-BBSSD-VM" \
     -enable-kvm \
     -cpu host \
-    -smp 4 \
-    -m 4G \
+    -smp 8 \
+    -m 8G \
     -device virtio-scsi-pci,id=scsi0 \
     -device scsi-hd,drive=hd0 \
     -drive file=$OSIMGF,if=none,aio=native,cache=none,format=qcow2,id=hd0 \
-    -device femu,devsz_mb=4096,femu_mode=$SIMPLE,backend=$AIO,backend_path=$BACKEND_PATH \
+    -device femu,devsz_mb=16384,femu_mode=$COMPRESSION,backend=$AIO,backend_path=$BACKEND_PATH \
     -net user,hostfwd=tcp::8080-:22 \
     -net nic,model=virtio \
     -nographic \
