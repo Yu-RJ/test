@@ -8,7 +8,8 @@
 #include <unistd.h>    //定义了read、write、close、lseek等函数
 int mycmp(void *arr1, void *arr2, int len);
 
-int main(void) {
+int main(void)
+{
 
     // FILE *fp = NULL;
     // int res = 0;
@@ -84,51 +85,58 @@ int main(void) {
     // printf("[test 2]: PSASS \n");
 
     // --------------------------------------------------------------------------------
+
     FILE *fp = NULL;
     char filename[] = "test_data";
     printf("begin test ... ... ...\n");
     fp = fopen(filename, "wb");
-    if (!fp) {
+    if (!fp)
+    {
         printf("%s file open fail\n", filename);
         return -1;
-    } else
+    }
+    else
         printf("%s [file open success]  ", filename);
-    char write_b[128];
-    for (int i = 0; i < 128; i++)
-        write_b[i] = i;
-    for (int i = 0; i < 5000000; i++)
-        fwrite(write_b, 128, 1, fp);
+    char write_b[1024]; // 1KB
+    int test_size = 8;  // GB
+    for (int i = 0; i < 1024; i++)
+        write_b[i] = i % 256;
+    for (int i = 0; i < 1024 * 1024 * test_size; i++)
+        fwrite(write_b, 1024, 1, fp);
     fclose(fp);
-    printf("[write over]\n");
+    printf("[write over] size:%dGB\n", test_size);
 
     // test 3
     // --------------------------------------------------------------------------------
-    printf("\n [test 3]: ... ... ... \n");
+    printf("\n[test 3]: ... ... ... \n");
     fp = fopen(filename, "rb");
-    if (!fp) {
+    if (!fp)
+    {
         printf("%s file open fail\n", filename);
         return -1;
-    } else
+    }
+    else
         printf("%s [file open success]  ", filename);
-    char com_c;
-    for (int i = 0; i < 5000000; i++)
-        for (int j = 0; j < 128; j++) {
-            fread(&com_c, 1, 1, fp);
-            if (com_c != j % 128) {
-                printf("CMP ERROR: i=%d , j=%d , read:BEGIN-%d-END\n", i, j,
-                       com_c);
-            }
+    char com_c[1024];
+    int ret;
+    for (int i = 0; i < 1024 * 1024 * test_size; i++){
+        fread(com_c, 1024, 1, fp);
+        if (ret = mycmp(write_b, com_c, 1024) != -1){
+            printf("CMP ERROR: i=%d , ret=%d \n", i, ret, );
         }
+    }
+
     fclose(fp);
     printf("[test 3]: PSASS \n");
     return 0;
 }
 
-int mycmp(void *arr1, void *arr2, int len) {
+int mycmp(void *arr1, void *arr2, int len)
+{
     char *str1 = arr1;
     char *str2 = arr2;
     for (int i = 0; i < len; i++)
         if (*str1++ != *str2++)
-            return -1;
-    return 0;
+            return i;
+    return -1;
 }

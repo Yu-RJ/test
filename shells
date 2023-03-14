@@ -22,3 +22,6 @@ sudo cp ~/test/test ~/ssd/test
 
 sudo cp ~/test/shells ~/ssd/shells
 cat ~/ssd/shells
+
+cat ~/test/shells > /dev/nvme0n1
+cat ~/test/test.c > /dev/nvme0n1
