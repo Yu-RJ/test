@@ -122,7 +122,7 @@ int main(void)
     for (int i = 0; i < 1024 * 1024 * test_size; i++){
         fread(com_c, 1024, 1, fp);
         if (ret = mycmp(write_b, com_c, 1024) != -1){
-            printf("CMP ERROR: i=%d , ret=%d \n", i, ret, );
+            printf("CMP ERROR: i=%d , ret=%d \n", i, ret);
         }
     }
 
