@@ -33,7 +33,7 @@ HOST: sudo fio -filename=/dev/nvme1n1p1? -direct=1 -thread -rw=randwrite -ioengi
 FEMU: sudo fio -filename=/dev/nvme0n1?   -direct=1 -thread -rw=rw -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
 HOST: sudo fio -filename=/dev/nvme1n1p1? -direct=1 -thread -rw=rw -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
 # 2G*8线程 70%随机读_30%随机写 30s
-FEMU: sudo fio -filename=/dev/nvme0n1?   -direct=1 -thread -rw=randrw -rwmixread=70  -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
+FEMU: sudo fio -filename=/dev/nvme0n1?   -direct=1 -thread -rw=randrw -rwmixread=70 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
 HOST: sudo fio -filename=/dev/nvme1n1p1? -direct=1 -thread -rw=randrw -rwmixread=70 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
 
 参数说明:
