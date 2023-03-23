@@ -1,4 +1,4 @@
-HOST:
+
 ./femu-compile.sh > /home/yurunjie/femu/build-femu/compile_log
 ./run-blackbox.sh  > /home/yurunjie/femu/build-femu/filelog
 
@@ -11,30 +11,21 @@ sudo mount /dev/nvme0n1 ~/ssd
 git pull origin master
 gcc test.c -o test
 sudo cp ~/test/test ~/ssd/test
+cd ~/ssd
 sudo ~/ssd/test
 sudo ./test
 # test by copy
 sudo cp ~/test/shells ~/ssd/shells
 cat ~/ssd/shells
 #test by fio
-# 2G*8线程 顺序读 30s
-FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=read -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-HOST: sudo fio -filename=/dev/sdc -direct=1 -thread -rw=read -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
-# 2G*8线程 顺序写 30s
+FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=read  -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=write -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-HOST: sudo fio -filename=/dev/sdc -direct=1 -thread -rw=write -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
-# 2G*8线程 随机读 30s
-FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randread -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-HOST: sudo fio -filename=/dev/sdc -direct=1 -thread -rw=randread -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
-# 2G*8线程 随机写 30s
+FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randread  -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randwrite -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-HOST: sudo fio -filename=/dev/sdc -direct=1 -thread -rw=randwrite -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
-# 2G*8线程 70%顺序读_30%顺序写 30s
-FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=rw -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-HOST: sudo fio -filename=/dev/sdc -direct=1 -thread -rw=rw -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
-# 2G*8线程 70%随机读_30%随机写 30s
-FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randrw -rwmixread=70 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-HOST: sudo fio -filename=/dev/sdc -direct=1 -thread -rw=randrw -rwmixread=70 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=1G -numjobs=8
+# 70%顺序读_30%顺序写 
+FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=rw     -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
+# 70%随机读_30%随机写 
+FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randrw -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
 
 参数说明:
 filename=/dev/sdb1 测试文件名称,通常选择需要测试的盘的data目录。
