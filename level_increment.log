@@ -1,0 +1,101 @@
++++ leveldb_tests(增量模式)
+(空盘测试)    
+
+
+
+(满盘测试)   211 tests from 27 test suites ran. (89191 ms total)
+
+
+
+
+
++++ db_bench
+1 - 测线程
+(满盘测试 1.1) 测all leveldb-1 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       5.220 micros/op;   21.2 MB/s     
+fillsync     :     213.192 micros/op;    0.5 MB/s (1000 ops)
+fillrandom   :       7.724 micros/op;   14.3 MB/s     
+overwrite    :       9.548 micros/op;   11.6 MB/s     
+compact      : 3175595.000 micros/op;
+
+(满盘测试 1.2) 测all leveldb-2 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      19.989 micros/op;   11.0 MB/s     
+fillsync     :     356.870 micros/op;    0.6 MB/s (1000 ops)
+fillrandom   :      21.695 micros/op;   10.2 MB/s     
+overwrite    :      23.215 micros/op;    9.5 MB/s     
+compact      : 8689731.000 micros/op;
+
+(满盘测试 1.3) 测all leveldb-4 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      47.549 micros/op;    9.3 MB/s     
+fillsync     :     439.460 micros/op;    1.0 MB/s (1000 ops)
+fillrandom   :      54.584 micros/op;    8.1 MB/s     
+overwrite    :      53.007 micros/op;    8.3 MB/s     
+compact      : 18063091.000 micros/op;
+
+2 - 测 value size
+(满盘测试 2.1) 测all leveldb-1 kemu-8 Values=4096
+Keys:       16 bytes each
+Values:     4096 bytes each (2048 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      37.456 micros/op;  104.7 MB/s     
+fillsync     :     358.369 micros/op;   10.9 MB/s (1000 ops)
+fillrandom   :     323.319 micros/op;   12.1 MB/s     
+overwrite    :     411.713 micros/op;    9.5 MB/s     
+compact      : 62424910.000 micros/op;
+
+(满盘测试 2.2) 测all leveldb-1 kemu-8 Values=1024
+Keys:       16 bytes each
+Values:     1024 bytes each (512 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      10.021 micros/op;   99.0 MB/s     
+fillsync     :     246.646 micros/op;    4.0 MB/s (1000 ops)
+fillrandom   :      60.227 micros/op;   16.5 MB/s     
+overwrite    :      82.631 micros/op;   12.0 MB/s     
+compact      : 14,014,932.000 micros/op;
+
+(满盘测试 2.3) 测all leveldb-1 kemu-8 Values=256
+Keys:       16 bytes each
+Values:     256 bytes each (128 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       6.170 micros/op;   42.0 MB/s     
+fillsync     :     236.857 micros/op;    1.1 MB/s (1000 ops)
+fillrandom   :      14.985 micros/op;   17.3 MB/s     
+overwrite    :      20.392 micros/op;   12.7 MB/s     
+compact      : 5,601,676.000 micros/op;
+
+(满盘测试 2.4) 测all leveldb-1 kemu-8 Values=64
+Keys:       16 bytes each
+Values:     64 bytes each (32 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       4.856 micros/op;   15.8 MB/s     
+fillsync     :     211.075 micros/op;    0.4 MB/s (1000 ops)
+fillrandom   :       6.831 micros/op;   11.4 MB/s     
+overwrite    :       8.131 micros/op;    9.5 MB/s     
+compact      : 2,372,473.000 micros/op;
+
+(满盘测试 2.5) 测all leveldb-1 kemu-8 Values=16
+Keys:       16 bytes each
+Values:     16 bytes each (8 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       4.841 micros/op;    6.3 MB/s     
+fillsync     :     239.923 micros/op;    0.1 MB/s (1000 ops)
+fillrandom   :       6.149 micros/op;    5.1 MB/s     
+overwrite    :       6.591 micros/op;    4.9 MB/s     
+compact      : 2,255,020.000 micros/op;

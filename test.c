@@ -98,7 +98,7 @@ int main(void)
     else
         printf("%s [file open success]  ", filename);
     char write_b[1024]; // 1KB
-    int test_size = 8;  // GB
+    int test_size = 3;  // GB
     for (int i = 0; i < 1024; i++)
         write_b[i] = i % 256;
     for (int i = 0; i < 1024 * 1024 * test_size; i++)

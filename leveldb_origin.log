@@ -1,0 +1,101 @@
++++ leveldb_tests(原始模式)
+(空盘测试)  211 tests from 27 test suites ran. (92518 ms total)
+            211 tests from 27 test suites ran. (91870 ms total)
+            211 tests from 27 test suites ran. (92711 ms total)
+
+(满盘测试)  211 tests from 27 test suites ran. (94904 ms total)
+            211 tests from 27 test suites ran. (92555 ms total)
+            211 tests from 27 test suites ran. (93820 ms total)
+
+
+
++++ db_bench
+1 - 测线程
+(满盘测试 1.1) 测all leveldb-1 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       5.480 micros/op;   20.2 MB/s     
+fillsync     :     237.245 micros/op;    0.5 MB/s (1000 ops)
+fillrandom   :       7.843 micros/op;   14.1 MB/s     
+overwrite    :       9.651 micros/op;   11.5 MB/s     
+compact      : 2,747,267.000 micros/op;
+
+(满盘测试 1.2) 测all leveldb-2 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      22.199 micros/op;    9.9 MB/s     
+fillsync     :     344.155 micros/op;    0.6 MB/s (1000 ops)
+fillrandom   :      23.574 micros/op;    9.4 MB/s     
+overwrite    :      22.111 micros/op;   10.0 MB/s     
+compact      : 6,040,037.000 micros/op;
+
+(满盘测试 1.3) 测all leveldb-4 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      53.304 micros/op;    8.3 MB/s     
+fillsync     :     405.142 micros/op;    1.1 MB/s (1000 ops)
+fillrandom   :      58.004 micros/op;    7.6 MB/s     
+overwrite    :      58.652 micros/op;    7.5 MB/s     
+compact      : 19,671,931.000 micros/op;
+
+2 - 测 value size
+(满盘测试 2.1) 测all leveldb-1 kemu-8 Values=4096
+Keys:       16 bytes each
+Values:     4096 bytes each (2048 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      37.636 micros/op;  104.2 MB/s     
+fillsync     :     325.722 micros/op;   12.0 MB/s (1000 ops)
+fillrandom   :     335.372 micros/op;   11.7 MB/s     
+overwrite    :     437.769 micros/op;    9.0 MB/s     
+compact      : 66,111,401.000 micros/op;
+
+(满盘测试 2.2) 测all leveldb-1 kemu-8 Values=1024
+Keys:       16 bytes each
+Values:     1024 bytes each (512 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      10.697 micros/op;   92.7 MB/s     
+fillsync     :     278.169 micros/op;    3.6 MB/s (1000 ops)
+fillrandom   :      63.370 micros/op;   15.7 MB/s     
+overwrite    :      85.458 micros/op;   11.6 MB/s     
+compact      : 14,370,644.000 micros/op;
+
+(满盘测试 2.3) 测all leveldb-1 kemu-8 Values=256
+Keys:       16 bytes each
+Values:     256 bytes each (128 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       6.003 micros/op;   43.2 MB/s     
+fillsync     :     222.221 micros/op;    1.2 MB/s (1000 ops)
+fillrandom   :      14.451 micros/op;   18.0 MB/s     
+overwrite    :      20.683 micros/op;   12.5 MB/s     
+compact      : 5,893,564.000 micros/op;
+
+(满盘测试 2.4) 测all leveldb-1 kemu-8 Values=64
+Keys:       16 bytes each
+Values:     64 bytes each (32 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       4.887 micros/op;   15.6 MB/s     
+fillsync     :     242.617 micros/op;    0.3 MB/s (1000 ops)
+fillrandom   :       6.832 micros/op;   11.2 MB/s     
+overwrite    :       8.039 micros/op;    9.5 MB/s     
+compact      : 2,537,406.000 micros/op;
+
+(满盘测试 2.5) 测all leveldb-1 kemu-8 Values=16
+Keys:       16 bytes each
+Values:     16 bytes each (8 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       4.696 micros/op;    6.5 MB/s     
+fillsync     :     231.341 micros/op;    0.1 MB/s (1000 ops)
+fillrandom   :       5.807 micros/op;    5.3 MB/s     
+overwrite    :       6.312 micros/op;    4.8 MB/s     
+compact      : 2,342,968.000 micros/op;

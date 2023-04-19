@@ -6,13 +6,237 @@ compression  5552    306    818     3.946(掉盘)                               
 compression  118     220    430     484                                                                 1G*4线程  30s ,映射表页锁,无压缩,一一映射
 compression  117     279    430     451                                                                 1G*8线程  30s ,映射表页锁,无压缩,一一映射
 
-# 23.3.18
-SSD类型      顺序读     顺序写      随机读      随机写       备注(8核 16G内存 32G_SSD)                                                                          2G*8线程  30s
-page         2642       116(掉盘）  3843       162(掉盘）   (new 合并submit) 2G*8线程  30s
-page         2483       133(掉盘）                          (new 合并submit) 1G*16线程  30s
-
 # 23.3.23  核=8 内存=16 SSD=32   HOST:独占
 SSD类型      顺序读     顺序写      随机读      随机写       备注
 compression            310                     480         2G*8 映射表页锁
-simple                 456                     400         2G*8
-裸盘                   505                     400 
+simple                 455                     400         2G*8
+page                   507                     506         2G*8
+裸盘(SATA)             505                     400         2G*8
+
+
+23.4.17 未做ITP扩展
+FIO:                    【2G*8 三批共约13G io写速度424-338-341】
+Statistical_information: 
+  wsec_origin=25165976 wsec_reality=25165976  wsec_samefp=0 wsec_unsamefp=22824376
+  wbr_origin=3145752  wbr_reality=3145746  wbr_unmapped=292700
+
+23.4.17 ITP扩展 1tp-8itp
+【FIO】:                    【顺序写2G*8 约20G io写速度500】
+Statistical_information: 
+  wsec_origin=33554656  wsec_reality=33554656 wsec_samefp=0       wsec_unsamefp=30953888
+  wbr_origin=4194336    wbr_reality=4194332   wbr_unmapped=325096
+
+【levelDB】:                【db_bench + leveldb_tests 写入约3.5G】
+Statistical_information: 
+  wsec_origin=9362072   wsec_reality=7390652  wsec_samefp=1971420 wsec_unsamefp=3294020
+  wbr_origin=1170260    wbr_reality=935596    wbr_unmapped=512079
+  --wbr_origin=658181    wbr_reality=423517   
+
+
+23.4.18 (nvme0n1逻辑大小 8G)
+--- FIO write -runtime=30 -size=2G -numjobs=8 (空盘开始写)
+  WRITE: bw=504MiB/s (529MB/s), 504MiB/s-504MiB/s (529MB/s-529MB/s), io=14.8GiB (15.9GB), run=30008-30008msec
+--- FIO read  -runtime=30 -size=2G -numjobs=8
+  READ:  bw=220MiB/s (230MB/s), 220MiB/s-220MiB/s (230MB/s-230MB/s), io=6595MiB (6915MB), run=30037-30037msec
+--- FIO randwrite -runtime=30 -size=2G -numjobs=8 (空盘开始写)
+  WRITE: bw=506MiB/s (530MB/s), 506MiB/s-506MiB/s (530MB/s-530MB/s), io=14.8GiB (15.9GB), run=30008-30008msec
+--- FIO randread  -runtime=30 -size=2G -numjobs=8
+  READ:  bw=219MiB/s (229MB/s), 219MiB/s-219MiB/s (229MB/s-229MB/s), io=6567MiB (6886MB), run=30022-30022msec
+
++++ leveldb_tests
+  (空盘测试)    211 tests from 27 test suites ran. (91788 ms total)
+  from: wsec_origin=  401848  wsec_reality=  401805  wsec_samefp=     43  wsec_unsamefp=     29  wbr_origin=  50231  wbr_reality=  50230 wbr_unmapped=  50222
+  to:   wsec_origin= 5793760  wsec_reality= 3790528  wsec_samefp=2003232  wsec_unsamefp=2622672  wbr_origin= 724220  wbr_reality= 483284 wbr_unmapped= 145982  
+  true: wsec_origin= 5391912  wsec_reality= 3388723  wsec_samefp=2003189  wsec_unsamefp=2622643  wbr_origin= 673989  wbr_reality= 433054 wbr_unmapped=  95760  
+  (满盘测试)    211 tests from 27 test suites ran. (93183 ms total)
+  from: wsec_origin=20239480  wsec_reality=17757113  wsec_samefp=2482367  wsec_unsamefp=2697993  wbr_origin=2529935  wbr_reality=2229428 wbr_unmapped=1882390
+  to:   wsec_origin=25821048  wsec_reality=21005374  wsec_samefp=4815674  wsec_unsamefp=5610022  wbr_origin=3227631  wbr_reality=2645054 wbr_unmapped=1924419
+  true: wsec_origin= 5581568  wsec_reality= 3248261  wsec_samefp=2333307  wsec_unsamefp=2912029  wbr_origin= 697696  wbr_reality= 415626 wbr_unmapped=  42029
+
++++ leveldb_tests(增量模式)
+(空盘测试)    211 tests from 27 test suites ran. (92197 ms total)
+  from: wsec_origin=  401888  wsec_reality=  401815  wsec_samefp=      73  wsec_unsamefp=     39  wbr_origin=  50236  wbr_reality=  50233 wbr_unmapped=  50222
+  to:   wsec_origin= 6490616  wsec_reality= 4292737  wsec_samefp= 2197879  wsec_unsamefp=2897657  wbr_origin= 811327  wbr_reality= 546420 wbr_unmapped= 174385
+  true: wsec_origin= 6088728  wsec_reality= 3890922  wsec_samefp= 2197806  wsec_unsamefp=2897618  wbr_origin= 761091  wbr_reality= 496187 wbr_unmapped= 124163
+  raio: wsec_reality/wsec_origin=63.90%   wsec_samefp/(wsec_samefp+wsec_unsamefp)=43.13%    wbr_reality/wbr_origin=65.19%
+(满盘测试)    211 tests from 27 test suites ran. (90727 ms total)
+  from: wsec_origin=32027144  wsec_reality=22363675  wsec_samefp= 9663469  wsec_unsamefp=6494939  wbr_origin=4003393  wbr_reality=2815612 wbr_unmapped=1983592
+  to:   wsec_origin=37807840  wsec_reality=25439259  wsec_samefp=12368581  wsec_unsamefp=9560635  wbr_origin=4725980  wbr_reality=3209673 wbr_unmapped=1984828
+  true: wsec_origin= 5780696  wsec_reality= 3075584  wsec_samefp= 2705112  wsec_unsamefp=3065696  wbr_origin= 722587  wbr_reality= 394061 wbr_unmapped=   1236
+  raio: wsec_reality/wsec_origin=53.20%   wsec_samefp/(wsec_samefp+wsec_unsamefp)=46.88%    wbr_reality/wbr_origin=54.53%
+
++++ leveldb_tests(原始模式)
+(空盘测试)  211 tests from 27 test suites ran. (92518 ms total)
+            211 tests from 27 test suites ran. (91870 ms total)
+            211 tests from 27 test suites ran. (92711 ms total)
+(满盘测试)  211 tests from 27 test suites ran. (94904 ms total)
+            211 tests from 27 test suites ran. (92555 ms total)
+            211 tests from 27 test suites ran. (93820 ms total)
+
++++ db_bench(增量模式)
+(空盘测试) 
+  from: wsec_origin=  401848  wsec_reality= 401805  wsec_samefp=     43  wsec_unsamefp=    29  wbr_origin= 50231  wbr_reality= 50230  wbr_unmapped= 50222
+  to:   wsec_origin= 3705784  wsec_reality=3644498  wsec_samefp=  61286  wsec_unsamefp=617170  wbr_origin=463223  wbr_reality=459745  wbr_unmapped=378416
+  true: wsec_origin= 3303936  wsec_reality=3242693  wsec_samefp=  61243  wsec_unsamefp=617141  wbr_origin=412992  wbr_reality=409515  wbr_unmapped=328194
+  raio: wsec_reality/wsec_origin=98.15%   wsec_samefp/(wsec_samefp+wsec_unsamefp)=9.03%     wbr_reality/wbr_origin=99.15%
+
+LevelDB:    version 1.23
+Date:       Tue Apr 18 12:25:15 2023
+CPU:        8 * Intel(R) Xeon(R) Silver 4214R CPU @ 2.40GHz
+CPUCache:   16384 KB
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+RawSize:    110.6 MB (estimated)
+FileSize:   62.9 MB (estimated)
+WARNING: Optimization is disabled: benchmarks unnecessarily slow
+WARNING: Assertions are enabled; benchmarks unnecessarily slow
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fillseq      :       4.986 micros/op;   22.2 MB/s     
+fillsync     :     281.686 micros/op;    0.4 MB/s (1000 ops)
+fillrandom   :       7.506 micros/op;   14.7 MB/s     
+overwrite    :      10.008 micros/op;   11.1 MB/s     
+readrandom   :       8.985 micros/op; (864322 of 1000000 found)
+readrandom   :       7.673 micros/op; (864083 of 1000000 found)
+readseq      :       0.611 micros/op;  181.0 MB/s    
+readreverse  :       1.166 micros/op;   94.9 MB/s    
+compact      : 1564223.000 micros/op;
+readrandom   :       4.836 micros/op; (864105 of 1000000 found)
+readseq      :       0.513 micros/op;  215.9 MB/s    
+readreverse  :       1.012 micros/op;  109.3 MB/s    
+fill100K     :    1477.598 micros/op;   64.6 MB/s (1000 ops)
+crc32c       :       9.147 micros/op;  427.0 MB/s (4K per op)
+snappycomp   :   16793.000 micros/op; (snappy failure)
+snappyuncomp :   14306.000 micros/op; (snappy failure)
+zstdcomp     :   16196.000 micros/op; (zstd failure)
+zstduncomp   :   16374.000 micros/op; (zstd failure)
+
+(满盘测试) 
+  from: wsec_origin=18804896 wsec_reality=18714590  wsec_samefp= 90306  wsec_unsamefp=3038038  wbr_origin=2350612  wbr_reality=2343807  wbr_unmapped=1959569
+  to:   wsec_origin=22115600 wsec_reality=21967900  wsec_samefp=147700  wsec_unsamefp=6151996  wbr_origin=2764450  wbr_reality=2754574  wbr_unmapped=1976988
+  true: wsec_origin= 3310704 wsec_reality= 3253310   wsec_samefp=57394  wsec_unsamefp=3113958  wbr_origin= 413838  wbr_reality= 410767  wbr_unmapped=  17419
+  raio: wsec_reality/wsec_origin=98.27%   wsec_samefp/(wsec_samefp+wsec_unsamefp)=1.81%     wbr_reality/wbr_origin=99.26%
+
+LevelDB:    version 1.23
+Date:       Tue Apr 18 12:28:08 2023
+CPU:        8 * Intel(R) Xeon(R) Silver 4214R CPU @ 2.40GHz
+CPUCache:   16384 KB
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+RawSize:    110.6 MB (estimated)
+FileSize:   62.9 MB (estimated)
+WARNING: Optimization is disabled: benchmarks unnecessarily slow
+WARNING: Assertions are enabled; benchmarks unnecessarily slow
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fillseq      :       5.005 micros/op;   22.1 MB/s     
+fillsync     :     251.575 micros/op;    0.4 MB/s (1000 ops)
+fillrandom   :       7.620 micros/op;   14.5 MB/s     
+overwrite    :       9.849 micros/op;   11.2 MB/s     
+readrandom   :       9.171 micros/op; (864322 of 1000000 found)
+readrandom   :       7.898 micros/op; (864083 of 1000000 found)
+readseq      :       0.577 micros/op;  191.7 MB/s    
+readreverse  :       1.177 micros/op;   94.0 MB/s    
+compact      : 1665409.000 micros/op;
+readrandom   :       4.853 micros/op; (864105 of 1000000 found)
+readseq      :       0.513 micros/op;  215.8 MB/s    
+readreverse  :       1.000 micros/op;  110.6 MB/s    
+fill100K     :    1618.676 micros/op;   58.9 MB/s (1000 ops)
+crc32c       :       9.230 micros/op;  423.2 MB/s (4K per op)
+snappycomp   :   17106.000 micros/op; (snappy failure)
+snappyuncomp :   17878.000 micros/op; (snappy failure)
+zstdcomp     :   16638.000 micros/op; (zstd failure)
+zstduncomp   :   16607.000 micros/op; (zstd failure)
+
++++ db_bench(原始模式)
+1 - 测线程
+(满盘测试 1.1) 测all leveldb-1 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       5.480 micros/op;   20.2 MB/s     
+fillsync     :     237.245 micros/op;    0.5 MB/s (1000 ops)
+fillrandom   :       7.843 micros/op;   14.1 MB/s     
+overwrite    :       9.651 micros/op;   11.5 MB/s     
+compact      : 2,747,267.000 micros/op;
+
+(满盘测试 1.2) 测all leveldb-2 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      22.199 micros/op;    9.9 MB/s     
+fillsync     :     344.155 micros/op;    0.6 MB/s (1000 ops)
+fillrandom   :      23.574 micros/op;    9.4 MB/s     
+overwrite    :      22.111 micros/op;   10.0 MB/s     
+compact      : 6,040,037.000 micros/op;
+
+(满盘测试 1.3) 测all leveldb-4 kemu-8 
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      53.304 micros/op;    8.3 MB/s     
+fillsync     :     405.142 micros/op;    1.1 MB/s (1000 ops)
+fillrandom   :      58.004 micros/op;    7.6 MB/s     
+overwrite    :      58.652 micros/op;    7.5 MB/s     
+compact      : 19,671,931.000 micros/op;
+
+2 - 测 value size
+(满盘测试 2.1) 测all leveldb-1 kemu-8 Values=4096
+Keys:       16 bytes each
+Values:     4096 bytes each (2048 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      37.636 micros/op;  104.2 MB/s     
+fillsync     :     325.722 micros/op;   12.0 MB/s (1000 ops)
+fillrandom   :     335.372 micros/op;   11.7 MB/s     
+overwrite    :     437.769 micros/op;    9.0 MB/s     
+compact      : 66,111,401.000 micros/op;
+
+(满盘测试 2.2) 测all leveldb-1 kemu-8 Values=1024
+Keys:       16 bytes each
+Values:     1024 bytes each (512 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :      10.697 micros/op;   92.7 MB/s     
+fillsync     :     278.169 micros/op;    3.6 MB/s (1000 ops)
+fillrandom   :      63.370 micros/op;   15.7 MB/s     
+overwrite    :      85.458 micros/op;   11.6 MB/s     
+compact      : 14,370,644.000 micros/op;
+
+(满盘测试 2.3) 测all leveldb-1 kemu-8 Values=256
+Keys:       16 bytes each
+Values:     256 bytes each (128 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       6.003 micros/op;   43.2 MB/s     
+fillsync     :     222.221 micros/op;    1.2 MB/s (1000 ops)
+fillrandom   :      14.451 micros/op;   18.0 MB/s     
+overwrite    :      20.683 micros/op;   12.5 MB/s     
+compact      : 5,893,564.000 micros/op;
+
+(满盘测试 2.4) 测all leveldb-1 kemu-8 Values=64
+Keys:       16 bytes each
+Values:     64 bytes each (32 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       4.887 micros/op;   15.6 MB/s     
+fillsync     :     242.617 micros/op;    0.3 MB/s (1000 ops)
+fillrandom   :       6.832 micros/op;   11.2 MB/s     
+overwrite    :       8.039 micros/op;    9.5 MB/s     
+compact      : 2,537,406.000 micros/op;
+
+(满盘测试 2.5) 测all leveldb-1 kemu-8 Values=16
+Keys:       16 bytes each
+Values:     16 bytes each (8 bytes after compression)
+Entries:    1000000
+------------------------------------------------
+fillseq      :       4.696 micros/op;    6.5 MB/s     
+fillsync     :     231.341 micros/op;    0.1 MB/s (1000 ops)
+fillrandom   :       5.807 micros/op;    5.3 MB/s     
+overwrite    :       6.312 micros/op;    4.8 MB/s     
+compact      : 2,342,968.000 micros/op;

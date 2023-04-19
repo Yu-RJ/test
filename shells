@@ -2,7 +2,7 @@
 ./femu-compile.sh > /home/yurunjie/femu/build-femu/compile_log
 ./run-blackbox.sh  > /home/yurunjie/femu/build-femu/filelog
 
-# mytest
+########## test EXT4
 cd ~/test
 sudo rm -rf ~/ssd
 mkdir ~/ssd
@@ -13,20 +13,23 @@ gcc test.c -o test
 sudo cp ~/test/test ~/ssd/test
 cd ~/ssd
 sudo ~/ssd/test
-sudo ./test
 # test by copy
 sudo cp ~/test/shells ~/ssd/shells
 cat ~/ssd/shells
-#test by fio
+
+########## test FIO
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=read  -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=write -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
+
+FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=write -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=10 -size=2G -numjobs=4
+
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randread  -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
+
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randwrite -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
+
 # 70%顺序读_30%顺序写 
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=rw     -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
 # 70%随机读_30%随机写 
 FEMU: sudo fio -filename=/dev/nvme0n1   -direct=1 -thread -rw=randrw -rwmixread=70 -rwmixwrite=30 -ioengine=libaio -bs=16K -group_reporting -name=mytest -iodepth=32 -runtime=30 -size=2G -numjobs=8
-
 参数说明:
 filename=/dev/sdb1 测试文件名称,通常选择需要测试的盘的data目录。
 direct=1 是否使用directIO,测试过程绕过OS自带的buffer,使测试磁盘的结果更真实。Linux读写的时候,内核维护了缓存,数据先写到缓存,后面再后台写到SSD。读的时候也优先读缓存里的数据。这样速度可以加快,但是一旦掉电缓存里的数据就没了。所以有一种模式叫做DirectIO,跳过缓存,直接读写SSD。 
@@ -57,3 +60,43 @@ nrfiles=8 每个进程生成文件的数量。
 (70%顺序读,30%顺序写)
 6. Read=70% Ramdon=100% rw=randrw, rwmixread=70, rwmixwrite=30
 (70%随机读,30%随机写)
+
+########## test level_db
+# https://blog.csdn.net/Zhouzi_heng/article/details/126196074
+sudo rm -rf ~/ssd
+mkdir ~/ssd
+sudo chmod 777 /dev/nvme0n1
+sudo mkfs -t ext4 /dev/nvme0n1
+sudo mount /dev/nvme0n1 ~/ssd
+sudo chmod -R 777 ~/ssd
+cd ~/ssd
+sudo git clone https://github.com/google/leveldb.git
+cd ~/ssd/leveldb/third_party
+sudo git submodule update --init
+cd ..
+sudo mkdir -p build && cd build
+sudo chmod -R 777 ~/ssd
+!!! 替换 /tmp -> ~/ssd/tmp
+sudo cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
+sudo chmod -R 777 ~/ssd
+sudo cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
+make db_bench
+./db_bench
+
+# tmp
+sudo cp ~/test/shells /tmp/shells
+sudo cat /tmp/shells
+-------------------------------------
+cd /tmp
+sudo rm -rf *
+sudo chmod 777 /dev/nvme0n1
+sudo mkfs -t ext4 /dev/nvme0n1
+sudo mount /dev/nvme0n1 /tmp
+cd ~/leveldb/build
+sudo cmake -DCMAKE_BUILD_TYPE=Release .. && cmake --build .
+make db_bench
+sudo ./db_bench
+make leveldb_tests
+sudo ./leveldb_tests
+# 满盘
+sudo cp ~/test_data /tmp/test_data
